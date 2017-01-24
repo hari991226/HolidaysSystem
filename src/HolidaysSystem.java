@@ -1,15 +1,8 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
 public class HolidaysSystem {
 
 	public static void main(String[] args) {
@@ -38,7 +31,7 @@ public class HolidaysSystem {
 	  		firstOption ();
 		  break;
 	  	case 2:
-	  		emailEntering ();
+	  		
 	  		break;
 	  	case 3:
 	  		System.out.println();
@@ -61,15 +54,18 @@ public class HolidaysSystem {
 	  String fullName = null;
 	  do {
 	  System.out.println("PLease enter your full name.");
-	  fullName = scanner.next();
-	  }while (!  checkIfNameEnteringMethodContainsOnlyLetters(fullName));	  	 
+	  fullName = scanner.nextLine();
+	  savingInformationIntoTextFile(fullName);
+	  }while (!  checkIfNameEnteringMethodContainsOnlyLetters(fullName));
+	  
   }
   public static void emailEntering (){
 	  Scanner scanner = new Scanner(System.in);
 	  String email = null;
 	  do {
 	  System.out.println("Please enter your email.");
-	  email = scanner.next();
+	  email = scanner.nextLine();
+	  savingInformationIntoTextFile(email);
 	  }
 	  while (!checkIfEmailEnteringMethodContainsAtAndCorrectPlatform(email));
   }
@@ -78,39 +74,49 @@ public class HolidaysSystem {
 	  String PIN = null;
 	  do {
 	  System.out.println("Please enter your PIN.");
-	  PIN = scanner.next();
+	  PIN = scanner.nextLine();
+	  savingInformationIntoTextFile(PIN);
 	  }
 	  while (!checkIfPINEnteringMethodContainsOnlyDigits(PIN));
   }
   public static void vacantionStart (){
 	  Scanner scanner = new Scanner(System.in);
+	  String vacantionStart = null;
+	  do {
 	  System.out.println("Please enter the date from which you want your vacantion to start.");
-	  String vacantionStart = scanner.next();
+	  vacantionStart = scanner.nextLine();
+	  savingInformationIntoTextFile(vacantionStart);
+	  }
+	  while (!checkIfDataIsCorrect(vacantionStart));
   }
   public static void vacantionEnd (){
 	  Scanner scanner = new Scanner(System.in);
+	  String vacantionEnd = null;
+	  do {
 	  System.out.println("Please enter the date when you want your vacantion to end.");
-	  String vacantionEnd = scanner.next();
+	  vacantionEnd = scanner.nextLine();
+	  savingInformationIntoTextFile(vacantionEnd);
+	  }
+	  while (!checkIfDataIsCorrect(vacantionEnd));
   }
   public static void vacantionType (){
 	  Scanner scanner = new Scanner(System.in);
 	  String vacantionType = null;
 	  do {
 	  System.out.println("Please enter tha type of your vacantion.");
-	  vacantionType = scanner.next();
-	  }while (! checkIfVacantionTypeMethodContainsOnlyLetters(vacantionType));
+	  vacantionType = scanner.nextLine();
+	  savingInformationIntoTextFile(vacantionType);
+	  }while (! checkIfVacantionTypeMethodIsCorrectlyEntered(vacantionType));
   }
-  public static  void savingInformationIntoTextFile (){
+  public static void savingInformationIntoTextFile (String informationFromScanner){
+	  FileWriter infoSaving;
 	  try {
-          String str = "SomeMoreTextIsHere";
-          File newTextFile = new File("C:/informationSavingFile.txt");
-
-          FileWriter fw = new FileWriter(newTextFile);
-          fw.write(str);
-          fw.close();
+          infoSaving = new FileWriter("usersInformationFile.txt", true);         
+          infoSaving.write(informationFromScanner);
+          infoSaving.write("\r\n");
+          infoSaving.close();
 
       } catch (IOException iox) {
-          //do stuff with exception
           iox.printStackTrace();
       }
 	  
@@ -123,8 +129,8 @@ public class HolidaysSystem {
 	    	return true ;
 	    }
   }
-  public static boolean checkIfVacantionTypeMethodContainsOnlyLetters (String enteredLetters) {
-  	if(! Pattern.matches(".*[a-zA-Z]+.*", enteredLetters)) {
+  public static boolean checkIfVacantionTypeMethodIsCorrectlyEntered (String enteredLetters) {
+  	if(! Pattern.matches("paid", enteredLetters) && ! Pattern.matches("not paid", enteredLetters)) {
   		System.out.println("Please, insert a correct vacantion type!");
   		return false;
   	}else {
@@ -132,7 +138,7 @@ public class HolidaysSystem {
   	}	  	
   }
   public static boolean checkIfPINEnteringMethodContainsOnlyDigits (String enteredDigits) {
-	  	if(! Pattern.matches(".*[0-9]+.*", enteredDigits )) {
+	  	if(! Pattern.matches("[0-9]{10}", enteredDigits )) {
 	  		System.out.println("Please, insert a correct PIN!");
 	  		return false;
 	  	}else {
@@ -148,4 +154,13 @@ public class HolidaysSystem {
 	  		return true ;
 	  	}
 } 
+  public static boolean checkIfDataIsCorrect (String enteredDigits){
+	  if(! Pattern.matches("([0-9]{2}).([0-9]{2}).([0-9]{4})", enteredDigits)){
+		  System.out.println("Please, eneter a correct date!");
+		  return false;
+	  }else {
+		  return true;
+		  
+	  }
+  }
 }
