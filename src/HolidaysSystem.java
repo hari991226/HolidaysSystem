@@ -1,8 +1,13 @@
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
+import javax.sound.sampled.Line;
 public class HolidaysSystem {
 
 	public static void main(String[] args) {
@@ -36,10 +41,11 @@ public class HolidaysSystem {
 	  	case 3:
 	  		System.out.println();
 	  		break;
-	  default:
-			System.out.println("There isn't an option like this");
-			break;
-	  }
+	  	default:
+	  	  System.out.println("There isn't an option like this"); 
+	  	 int optionAfterDefault = scannerForChoosingOption();
+	  	 menu(optionAfterDefault);
+	  }	
 }
   public static void firstOption (){
 	  nameEntering();
@@ -57,7 +63,14 @@ public class HolidaysSystem {
 	  fullName = scanner.nextLine();
 	  savingInformationIntoTextFile(fullName);
 	  }while (!  checkIfNameEnteringMethodContainsOnlyLetters(fullName));
-	  
+  }
+	  public static boolean checkIfNameEnteringMethodContainsOnlyLetters (String enteredLetters) {
+	    	if(! Pattern.matches(".*[a-zA-Z]+.*", enteredLetters)) {
+	    		System.out.println("Please, insert a correct name!");
+	    		return false;
+	    }else {
+	    	return true ;
+	    }  
   }
   public static void emailEntering (){
 	  Scanner scanner = new Scanner(System.in);
@@ -68,6 +81,15 @@ public class HolidaysSystem {
 	  savingInformationIntoTextFile(email);
 	  }
 	  while (!checkIfEmailEnteringMethodContainsAtAndCorrectPlatform(email));
+  }	  
+	  public static boolean checkIfEmailEnteringMethodContainsAtAndCorrectPlatform (String enteredAt) {
+		  //Checking if in Email Entering Method there is @ and a correct platform
+		  	if(! Pattern.matches(".*[@gmail.com]+.*.*[@abv.bg]+.*.*[@yahoo.com]+.*.*[mail.com]+.*", enteredAt )) {
+		  		System.out.println("Please, insert a correct email!");
+		  		return false;
+		  	}else {
+		  		return true ;
+		  	}
   }
   public static void PINentering (){
 	  Scanner scanner = new Scanner(System.in);
@@ -78,6 +100,14 @@ public class HolidaysSystem {
 	  savingInformationIntoTextFile(PIN);
 	  }
 	  while (!checkIfPINEnteringMethodContainsOnlyDigits(PIN));
+  }
+	  public static boolean checkIfPINEnteringMethodContainsOnlyDigits (String enteredDigits) {
+		  	if(! Pattern.matches("[0-9]{10}", enteredDigits )) {
+		  		System.out.println("Please, insert a correct PIN!");
+		  		return false;
+		  	}else {
+		  		return true ;
+		  	}
   }
   public static void vacantionStart (){
 	  Scanner scanner = new Scanner(System.in);
@@ -99,6 +129,15 @@ public class HolidaysSystem {
 	  }
 	  while (!checkIfDataIsCorrect(vacantionEnd));
   }
+	  public static boolean checkIfDataIsCorrect (String enteredDigits){
+		  if(! Pattern.matches("([0-9]{2}).([0-9]{2}).([0-9]{4})", enteredDigits)){
+			  System.out.println("Please, eneter a correct date!");
+			  return false;
+		  }else {
+			  return true;
+			  
+		  }
+  }
   public static void vacantionType (){
 	  Scanner scanner = new Scanner(System.in);
 	  String vacantionType = null;
@@ -107,7 +146,17 @@ public class HolidaysSystem {
 	  vacantionType = scanner.nextLine();
 	  savingInformationIntoTextFile(vacantionType);
 	  }while (! checkIfVacantionTypeMethodIsCorrectlyEntered(vacantionType));
+	  
   }
+  public static boolean checkIfVacantionTypeMethodIsCorrectlyEntered (String enteredLetters) {
+  	if(! Pattern.matches("paid", enteredLetters) && ! Pattern.matches("not paid", enteredLetters)) {
+  		System.out.println("Please, insert a correct vacantion type!");
+  		return false;
+  	}else {
+  		return true ;
+  	}	  	
+  
+  } 
   public static void savingInformationIntoTextFile (String informationFromScanner){
 	  FileWriter infoSaving;
 	  try {
@@ -119,48 +168,19 @@ public class HolidaysSystem {
       } catch (IOException iox) {
           iox.printStackTrace();
       }
-	  
   }
-  public static boolean checkIfNameEnteringMethodContainsOnlyLetters (String enteredLetters) {
-	    	if(! Pattern.matches(".*[a-zA-Z]+.*", enteredLetters)) {
-	    		System.out.println("Please, insert a correct name!");
-	    		return false;
-	    }else {
-	    	return true ;
-	    }
-  }
-  public static boolean checkIfVacantionTypeMethodIsCorrectlyEntered (String enteredLetters) {
-  	if(! Pattern.matches("paid", enteredLetters) && ! Pattern.matches("not paid", enteredLetters)) {
-  		System.out.println("Please, insert a correct vacantion type!");
-  		return false;
-  	}else {
-  		return true ;
-  	}	  	
-  }
-  public static boolean checkIfPINEnteringMethodContainsOnlyDigits (String enteredDigits) {
-	  	if(! Pattern.matches("[0-9]{10}", enteredDigits )) {
-	  		System.out.println("Please, insert a correct PIN!");
-	  		return false;
-	  	}else {
-	  		return true ;
-	  	}
-  } 
-  public static boolean checkIfEmailEnteringMethodContainsAtAndCorrectPlatform (String enteredAt) {
-	  //Checking if in Email Entering Method there is @ and a correct platform
-	  	if(! Pattern.matches(".*[@gmail.com]+.*.*[@abv.bg]+.*.*[@yahoo.com]+.*.*[mail.com]+.*", enteredAt )) {
-	  		System.out.println("Please, insert a correct email!");
-	  		return false;
-	  	}else {
-	  		return true ;
-	  	}
-} 
-  public static boolean checkIfDataIsCorrect (String enteredDigits){
-	  if(! Pattern.matches("([0-9]{2}).([0-9]{2}).([0-9]{4})", enteredDigits)){
-		  System.out.println("Please, eneter a correct date!");
-		  return false;
-	  }else {
-		  return true;
-		  
+  public static void readingFromATextFile () throws FileNotFoundException {
+	  BufferedReader readingFromTextFile = new BufferedReader(new FileReader("usersInformationFile.txt"));
+	  int linesInFile = 0;
+	  String[] readInformationFromFile = new String [linesInFile];
+	  try {
+		for (int i=0; i < linesInFile; i++){
+			readInformationFromFile[i] = readingFromTextFile.readLine();
+		}
+	  } catch (IOException e) {
+
+			e.printStackTrace();
 	  }
   }
 }
+  
