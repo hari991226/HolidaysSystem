@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import javax.sound.sampled.Line;
 public class HolidaysSystem {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		showMenu();
 		int chooseOption = scannerForChoosingOption();
 		menu(chooseOption);
@@ -30,13 +30,13 @@ public class HolidaysSystem {
 		  int option = scanner.nextInt();
 		  return option;
 	}
-  public static void menu(int option) {
+  public static void menu(int option) throws IOException {
 	  switch (option){
 	  	case 1:
 	  		firstOption ();
 		  break;
 	  	case 2:
-	  		
+	  		secondOption();
 	  		break;
 	  	case 3:
 	  		System.out.println();
@@ -47,13 +47,19 @@ public class HolidaysSystem {
 	  	 menu(optionAfterDefault);
 	  }	
 }
-  public static void firstOption (){
+  public static void firstOption () throws IOException{
 	  nameEntering();
 	  emailEntering();
 	  PINentering ();
 	  vacantionStart ();
 	  vacantionEnd ();
 	  vacantionType ();
+	  afterChoosingFirstOption();
+  }
+  public static void secondOption() throws IOException{
+	  int numberOfLines = countLinesInFile();
+		String[] readInformationFromFile = readingFromATextFile(numberOfLines);
+		showInformationInATableFormat(numberOfLines, readInformationFromFile);
   }
   public static void nameEntering (){
 	  Scanner scanner = new Scanner(System.in);
@@ -155,8 +161,13 @@ public class HolidaysSystem {
   	}else {
   		return true ;
   	}	  	
-  
   } 
+  public static void afterChoosingFirstOption() throws IOException{
+	  System.out.println("You successfully declared a vacantion. You can choose another option!");
+	  showMenu ();
+	  int chooseOption = scannerForChoosingOption();
+		menu(chooseOption);
+  }
   public static void savingInformationIntoTextFile (String informationFromScanner){
 	  FileWriter infoSaving;
 	  try {
@@ -169,9 +180,24 @@ public class HolidaysSystem {
           iox.printStackTrace();
       }
   }
-  public static void readingFromATextFile () throws FileNotFoundException {
+  private static void showInformationInATableFormat(int numberOfLines, String[] informationInFile) {
+		System.out.printf("%5s%30s%30s%50s%45s%40s", "Name", "Email", "PIN", "Vacantion start",
+				"Vacantion end", "Vacantion type");
+		System.out.println();
+		for (int i = 0; i < numberOfLines; i += 6) {
+			String name = informationInFile[i];
+			String email = informationInFile[i + 1];
+			String egn = informationInFile[i + 2];
+			String vacantionStart = informationInFile[i + 3];
+			String vacantionEnd = informationInFile[i + 4];
+			String vacantionType = informationInFile[i + 5];
+			System.out.format("%1s%35s%27s%37s%47s%43s", name, email, egn, vacantionStart,
+					vacantionEnd, vacantionType);
+			System.out.println();
+		}
+  }
+  public static String[] readingFromATextFile (int linesInFile) throws FileNotFoundException {
 	  BufferedReader readingFromTextFile = new BufferedReader(new FileReader("usersInformationFile.txt"));
-	  int linesInFile = 0;
 	  String[] readInformationFromFile = new String [linesInFile];
 	  try {
 		for (int i=0; i < linesInFile; i++){
@@ -181,6 +207,22 @@ public class HolidaysSystem {
 
 			e.printStackTrace();
 	  }
+	  return readInformationFromFile;
+  }
+  private static int countLinesInFile() throws IOException {
+		BufferedReader line = new BufferedReader(new FileReader("usersInformationFile.txt"));
+		String singleLine;
+		int numberOfLines = 0;
+		try {
+			while ((singleLine = line.readLine()) != null) {
+				numberOfLines++;
+			}
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		line.close();
+		return numberOfLines;
   }
 }
   
