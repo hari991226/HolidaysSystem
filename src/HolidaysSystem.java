@@ -20,14 +20,13 @@ public class HolidaysSystem {
 		System.out.println("1. Declare a vacantion");
 		System.out.println("2. See all the vacations");
 		System.out.println("3. See vacantion of an employee ");
-		System.out.println("4. Change holiday's status");
-		System.out.println("5. Exit");
+		System.out.println("4. Exit");
 		System.out.println("-----------------------");
 	}
 	public static int scannerForChoosingOption() {
-		  Scanner scanner = new Scanner(System.in);
+		  Scanner choosingOption = new Scanner(System.in);
 		  System.out.println("Please choose an option:");
-		  int option = scanner.nextInt();
+		  int option = choosingOption.nextInt();
 		  return option;
 	}
   public static void menu(int option) throws IOException {
@@ -39,7 +38,10 @@ public class HolidaysSystem {
 	  		secondOption();
 	  		break;
 	  	case 3:
-	  		System.out.println();
+	  		thirdOption ();
+	  		break;
+	  	case 4:
+	  		fouthOption();
 	  		break;
 	  	default:
 	  	  System.out.println("There isn't an option like this"); 
@@ -54,19 +56,27 @@ public class HolidaysSystem {
 	  vacantionStart ();
 	  vacantionEnd ();
 	  vacantionType ();
-	  afterChoosingFirstOption();
+	  afterChoosingOption();
   }
   public static void secondOption() throws IOException{
 	  int numberOfLines = countLinesInFile();
 		String[] readInformationFromFile = readingFromATextFile(numberOfLines);
 		showInformationInATableFormat(numberOfLines, readInformationFromFile);
+		afterChoosingOption();
+  }
+  public static void thirdOption () throws IOException{
+	  enterNameForThePersonsApllicationYouWantToSee ();
+	  afterChoosingOption();
+  }
+  public static void fouthOption(){
+	  System.out.println("Thank you for declaring a vacantion.");
   }
   public static void nameEntering (){
-	  Scanner scanner = new Scanner(System.in);
+	  Scanner scannerForNameEntering = new Scanner(System.in);
 	  String fullName = null;
 	  do {
 	  System.out.println("PLease enter your full name.");
-	  fullName = scanner.nextLine();
+	  fullName = scannerForNameEntering.nextLine();
 	  savingInformationIntoTextFile(fullName);
 	  }while (!  checkIfNameEnteringMethodContainsOnlyLetters(fullName));
   }
@@ -79,11 +89,11 @@ public class HolidaysSystem {
 	    }  
   }
   public static void emailEntering (){
-	  Scanner scanner = new Scanner(System.in);
+	  Scanner scannerForEnteringEmail = new Scanner(System.in);
 	  String email = null;
 	  do {
 	  System.out.println("Please enter your email.");
-	  email = scanner.nextLine();
+	  email = scannerForEnteringEmail.nextLine();
 	  savingInformationIntoTextFile(email);
 	  }
 	  while (!checkIfEmailEnteringMethodContainsAtAndCorrectPlatform(email));
@@ -98,11 +108,11 @@ public class HolidaysSystem {
 		  	}
   }
   public static void PINentering (){
-	  Scanner scanner = new Scanner(System.in);
+	  Scanner scannerForEnteringPIN = new Scanner(System.in);
 	  String PIN = null;
 	  do {
 	  System.out.println("Please enter your PIN.");
-	  PIN = scanner.nextLine();
+	  PIN = scannerForEnteringPIN.nextLine();
 	  savingInformationIntoTextFile(PIN);
 	  }
 	  while (!checkIfPINEnteringMethodContainsOnlyDigits(PIN));
@@ -116,21 +126,21 @@ public class HolidaysSystem {
 		  	}
   }
   public static void vacantionStart (){
-	  Scanner scanner = new Scanner(System.in);
+	  Scanner scannerForEnteringVacantionStart = new Scanner(System.in);
 	  String vacantionStart = null;
 	  do {
 	  System.out.println("Please enter the date from which you want your vacantion to start.");
-	  vacantionStart = scanner.nextLine();
+	  vacantionStart = scannerForEnteringVacantionStart.nextLine();
 	  savingInformationIntoTextFile(vacantionStart);
 	  }
 	  while (!checkIfDataIsCorrect(vacantionStart));
   }
   public static void vacantionEnd (){
-	  Scanner scanner = new Scanner(System.in);
+	  Scanner scannerForEnteringVacantionEnd = new Scanner(System.in);
 	  String vacantionEnd = null;
 	  do {
 	  System.out.println("Please enter the date when you want your vacantion to end.");
-	  vacantionEnd = scanner.nextLine();
+	  vacantionEnd = scannerForEnteringVacantionEnd.nextLine();
 	  savingInformationIntoTextFile(vacantionEnd);
 	  }
 	  while (!checkIfDataIsCorrect(vacantionEnd));
@@ -145,11 +155,11 @@ public class HolidaysSystem {
 		  }
   }
   public static void vacantionType (){
-	  Scanner scanner = new Scanner(System.in);
+	  Scanner scannerForEnteringVacantionType = new Scanner(System.in);
 	  String vacantionType = null;
 	  do {
 	  System.out.println("Please enter tha type of your vacantion.");
-	  vacantionType = scanner.nextLine();
+	  vacantionType = scannerForEnteringVacantionType.nextLine();
 	  savingInformationIntoTextFile(vacantionType);
 	  }while (! checkIfVacantionTypeMethodIsCorrectlyEntered(vacantionType));
 	  
@@ -162,8 +172,8 @@ public class HolidaysSystem {
   		return true ;
   	}	  	
   } 
-  public static void afterChoosingFirstOption() throws IOException{
-	  System.out.println("You successfully declared a vacantion. You can choose another option!");
+  public static void afterChoosingOption() throws IOException{
+	  System.out.println("You can choose another option!");
 	  showMenu ();
 	  int chooseOption = scannerForChoosingOption();
 		menu(chooseOption);
@@ -224,5 +234,30 @@ public class HolidaysSystem {
 		line.close();
 		return numberOfLines;
   }
+  public static void enterNameForThePersonsApllicationYouWantToSee () throws IOException{
+	Scanner enteringAPersonName = new Scanner (System.in);  
+	System.out.println("Please, enter the name of the person which application you want to see."); 
+	String enteredNameOfPerson = null;
+	do {
+	enteredNameOfPerson = enteringAPersonName.nextLine();
+	int numberOfLinesInFile = countLinesInFile();
+	String [] readInformationFromFile = readingFromATextFile(numberOfLinesInFile);
+	desplayInformationForCertainPerson (readInformationFromFile,numberOfLinesInFile,enteredNameOfPerson);
+  }while (! checkIfNameEnteringMethodContainsOnlyLetters(enteredNameOfPerson));
+  }
+  public static void desplayInformationForCertainPerson (String [] readInformationFromFile, int numberOfLinesInFile, String enteredNameOfPerson){
+	  for (int i = 0; i <  numberOfLinesInFile; i+=6) {
+		  if (enteredNameOfPerson.equals(readInformationFromFile[i])) {
+			  System.out.printf("%5s%25s%28s%37s%35s%25s\n", "Name", "Email", "PIN", "Vacantion start",
+						"Vacantion end", "Vacantion type");
+				System.out.format("%1s%30s%25s%25s%37s%29s\n", readInformationFromFile[i], readInformationFromFile[i + 1],
+						readInformationFromFile[i + 2], readInformationFromFile[i + 3],readInformationFromFile[i + 4],
+						readInformationFromFile[i + 5]);
+		  }else if (! enteredNameOfPerson.equals(readInformationFromFile[i])){
+			  System.out.println("There isn't a person like this declared a vacantion");
+		  }
+	}
+  }
 }
+
   
