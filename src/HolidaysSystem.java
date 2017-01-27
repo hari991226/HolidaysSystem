@@ -52,7 +52,7 @@ public class HolidaysSystem {
   public static void firstOption () throws IOException{
 	  nameEntering();
 	  emailEntering();
-	  PINentering ();
+	  PINEntering ();
 	  vacantionStart ();
 	  vacantionEnd ();
 	  vacantionType ();
@@ -75,10 +75,10 @@ public class HolidaysSystem {
 	  Scanner scannerForNameEntering = new Scanner(System.in);
 	  String fullName = null;
 	  do {
-	  System.out.println("PLease enter your full name.");
+	  System.out.println("PLease enter your first name.");
 	  fullName = scannerForNameEntering.nextLine();
 	  savingInformationIntoTextFile(fullName);
-	  }while (!  checkIfNameEnteringMethodContainsOnlyLetters(fullName));
+	  }while (! checkIfNameEnteringMethodContainsOnlyLetters(fullName));
   }
 	  public static boolean checkIfNameEnteringMethodContainsOnlyLetters (String enteredLetters) {
 	    	if(! Pattern.matches(".*[a-zA-Z]+.*", enteredLetters)) {
@@ -107,7 +107,7 @@ public class HolidaysSystem {
 		  		return true ;
 		  	}
   }
-  public static void PINentering (){
+  public static void PINEntering (){
 	  Scanner scannerForEnteringPIN = new Scanner(System.in);
 	  String PIN = null;
 	  do {
@@ -173,6 +173,8 @@ public class HolidaysSystem {
   	}	  	
   } 
   public static void afterChoosingOption() throws IOException{
+	  System.out.println();
+	  System.out.println();
 	  System.out.println("You can choose another option!");
 	  showMenu ();
 	  int chooseOption = scannerForChoosingOption();
@@ -247,13 +249,15 @@ public class HolidaysSystem {
   }
   public static void desplayInformationForCertainPerson (String [] readInformationFromFile, int numberOfLinesInFile, String enteredNameOfPerson){
 	  for (int i = 0; i <  numberOfLinesInFile; i+=6) {
+		  boolean isThereSuchAPerson = false;
 		  if (enteredNameOfPerson.equals(readInformationFromFile[i])) {
+			  isThereSuchAPerson = true;
 			  System.out.printf("%5s%25s%28s%37s%35s%25s\n", "Name", "Email", "PIN", "Vacantion start",
 						"Vacantion end", "Vacantion type");
 				System.out.format("%1s%30s%25s%25s%37s%29s\n", readInformationFromFile[i], readInformationFromFile[i + 1],
 						readInformationFromFile[i + 2], readInformationFromFile[i + 3],readInformationFromFile[i + 4],
 						readInformationFromFile[i + 5]);
-		  }else if (! enteredNameOfPerson.equals(readInformationFromFile[i])){
+		  }else if (isThereSuchAPerson = false){
 			  System.out.println("There isn't a person like this declared a vacantion");
 		  }
 	}
